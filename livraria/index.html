@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nébula Livros | Livraria online de ficção científica</title>
+<meta name="description" content="Clássicos e best-sellers de ficção científica com até 30% de desconto: Duna, Neuromancer, Fundação, 1984 e mais. Pix, cartão e 7 dias para se arrepender.">
+<meta name="theme-color" content="#0c1426">
+<link rel="canonical" href="https://SEU-PROJETO.vercel.app/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Nébula Livros: ficção científica com desconto">
+<meta property="og:description" content="Os maiores clássicos do gênero em um só lugar.">
+<meta property="og:url" content="https://SEU-PROJETO.vercel.app/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%238b7cff'/%3E%3Cellipse cx='16' cy='16' rx='15' ry='4' fill='none' stroke='%23f2d6a2' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<!-- Google Analytics 4: troque G-XXXXXXXXXX pelo seu ID -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}
+gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied'});
+gtag('js',new Date());gtag('config','G-XXXXXXXXXX');
+</script>
+</head>
+<body>
+<header class="topo"><div class="wrap">
+ <a class="logo" href="#">Nébula<span>Livros</span></a>
+ <input class="busca" id="q" type="search" placeholder="Buscar título ou autor" aria-label="Buscar livros" style="background:var(--bg2);border:1px solid var(--linha);border-radius:999px;padding:.55rem 1.1rem;color:var(--tx);font:.95rem var(--tit)">
+ <nav aria-label="Principal">
+  <a href="#catalogo">Catálogo</a><a href="#depoimentos">Leitores</a><a href="#faq">Dúvidas</a>
+  <button class="lnk" id="conta" style="font-family:var(--tit);text-decoration:none;color:var(--tx)">Entrar</button>
+  <button class="lnk carrinho" id="abrirCar" aria-label="Abrir carrinho" style="text-decoration:none;font-size:1.3rem">🛒<b id="nCar">0</b></button>
+ </nav>
+</div></header>
+
+<main>
+<section class="hero"><div class="wrap">
+ <div>
+  <h1>As maiores histórias do futuro estão aqui.</h1>
+  <p>Clássicos de ficção científica de Herbert, Asimov, Gibson, Lem e Liu Cixin com até 30% de desconto. Receba em casa ou comece a ler hoje no e-book.</p>
+  <div class="acoes"><a class="btn" href="#catalogo" data-cta="hero">Ver catálogo</a><a class="btn sec" href="#promo">Cupom LIVRO10</a></div>
+ </div>
+ <div class="leque" id="leque" aria-hidden="true"></div>
+</div></section>
+
+<div class="faixa"><div class="wrap">
+ <div><strong>Frete grátis</strong>em compras acima de R$ 199</div>
+ <div><strong>Pix, cartão e carteira</strong>checkout em modo de testes</div>
+ <div><strong>7 dias para desistir</strong>direito de arrependimento</div>
+ <div><strong>Nota fiscal automática</strong>NF-e enviada por e-mail</div>
+</div></div>
+
+<section id="catalogo" class="wrap">
+ <div class="cab">
+  <div><h2>Catálogo de ficção científica</h2><p class="mudo" id="cont"></p></div>
+  <div class="filtros" id="filtros"></div>
+  <select id="ord" aria-label="Ordenar"><option value="rel">Destaques</option><option value="menor">Menor preço</option><option value="maior">Maior preço</option><option value="ano">Mais antigos</option><option value="az">A a Z</option></select>
+ </div>
+ <div class="grade" id="grade"></div>
+</section>
+
+<section class="promo" id="promo"><div class="wrap">
+ <div><h2>Primeira compra com desconto extra</h2><p class="mudo">Aplique o cupom no carrinho e ganhe 10% sobre o valor dos livros.</p></div>
+ <span class="cupom-tag">LIVRO10</span>
+</div></section>
+
+<section id="depoimentos" class="wrap">
+ <h2>Quem compra, volta</h2>
+ <p class="mudo">Depoimentos ilustrativos para este projeto acadêmico.</p>
+ <div class="depo">
+  <blockquote><p>Comprei Duna e Fundação juntos. Chegaram em 5 dias e o e-book liberou na hora.</p><footer>Rafael M., Rio Branco</footer></blockquote>
+  <blockquote><p>Catálogo bem organizado. Achei Solaris e O Problema dos Três Corpos em minutos.</p><footer>Camila S., Belo Horizonte</footer></blockquote>
+  <blockquote><p>Usei o Pix de teste e a confirmação com a nota fiscal chegou certinha. Atendimento rápido.</p><footer>Thiago L., Recife</footer></blockquote>
+ </div>
+</section>
+
+<section id="faq" class="wrap faq">
+ <h2>Dúvidas frequentes</h2>
+ <details><summary>Quanto custa o frete?</summary><p>Depende da região do CEP: Sudeste R$ 14,90, Sul R$ 17,90, Centro-Oeste R$ 19,90, Nordeste R$ 21,90 e Norte R$ 29,90. Acima de R$ 199 o frete é grátis.</p></details>
+ <details><summary>Qual o prazo de entrega?</summary><p>De 3 a 12 dias úteis, conforme a região.</p></details>
+ <details><summary>Posso devolver um livro?</summary><p>Sim. Em até 7 dias corridos após o recebimento você pode desistir da compra, sem justificar, e recebe o valor de volta. Livros com defeito podem ser trocados em até 30 dias.</p></details>
+ <details><summary>Quais formas de pagamento?</summary><p>Pix, cartão de crédito em até 3× sem juros e carteiras digitais (PayPal e Mercado Pago). Neste projeto o pagamento é simulado em ambiente sandbox.</p></details>
+ <details><summary>Vocês emitem nota fiscal?</summary><p>Sim. Após a aprovação do pagamento, a NF-e é emitida automaticamente e enviada ao seu e-mail.</p></details>
+</section>
+</main>
+
+<footer class="rodape"><div class="wrap">
+ <div><h3>Nébula Livros Ltda.</h3><p>CNPJ 00.000.000/0001-00 (fictício)<br>Av. Brasil, 1000, Rio Branco, AC<br>contato@nebulalivros.example<br>(68) 3000-0000</p></div>
+ <div><h3>Políticas</h3><ul><li>Arrependimento em 7 dias (Decreto 7.962/2013)</li><li>Troca por defeito em até 30 dias</li><li><button class="lnk" data-abrir="priv">Política de Privacidade (LGPD)</button></li><li><button class="lnk" data-abrir="cook">Gerenciar cookies</button></li></ul></div>
+ <div><h3>Atendimento</h3><p>Chat no canto da tela<br>Seg a sex, 9h às 18h<br>Resposta em até 1 dia útil</p></div>
+ <p class="legal">Projeto acadêmico de comércio eletrônico. Nenhuma cobrança real é feita e os dados do negócio são fictícios. Capas e títulos pertencem às respectivas editoras e autores e são usados apenas de forma ilustrativa; capas carregadas da Open Library.</p>
+</div></footer>
+
+<div id="ov"></div>
+<aside id="gaveta" aria-label="Carrinho de compras">
+ <header>Seu carrinho <button class="x" id="fecharCar" aria-label="Fechar carrinho">×</button></header>
+ <div id="itens"></div>
+ <div class="rodcar">
+  <div class="linha2"><input id="cupom" type="text" placeholder="Cupom" style="flex:1;background:#0a1222;color:var(--tx);border:1px solid var(--linha);border-radius:8px;padding:.5rem .7rem" aria-label="Cupom"><button class="btn sec peq" id="aplicar">Aplicar</button></div>
+  <p class="nota" id="cupomMsg"></p>
+  <div class="linha2"><input id="cep" type="text" inputmode="numeric" maxlength="9" placeholder="CEP (00000-000)" style="flex:1;background:#0a1222;color:var(--tx);border:1px solid var(--linha);border-radius:8px;padding:.5rem .7rem" aria-label="CEP"></div>
+  <p class="nota" id="freteMsg">Informe o CEP para calcular o frete.</p>
+  <div class="res" aria-live="polite"><div><span>Subtotal</span><span id="rSub"></span></div><div><span>Desconto</span><span id="rDesc"></span></div><div><span>Frete</span><span id="rFrete"></span></div><div class="tot"><span>Total</span><span id="rTot"></span></div></div>
+  <button class="btn" id="irCheck">Finalizar compra</button>
+ </div>
+</aside>
+
+<div id="cookies" role="dialog" aria-label="Aviso de cookies">Usamos cookies de métricas (Google Analytics) só com o seu consentimento. Veja a <button class="lnk" data-abrir="priv">Política de Privacidade</button>.
+ <div class="acoes"><button class="btn peq" id="aceitar">Aceitar</button><button class="btn sec peq" id="recusar">Recusar</button></div></div>
+
+<button id="chatbtn" aria-label="Abrir chat" aria-expanded="false">💬</button>
+<div id="chat" role="region" aria-label="Chat de atendimento"><h3>Atendimento Nébula</h3>
+ <div id="log" aria-live="polite"><p>Olá! Escolha um assunto ou escreva sua dúvida.</p></div>
+ <div class="rap"><button>Frete</button><button>Prazo</button><button>Devolução</button><button>Pagamento</button><button>Nota fiscal</button></div>
+ <form id="chatf"><input id="chati" placeholder="Digite aqui" aria-label="Mensagem"><button>Enviar</button></form></div>
+
+<dialog id="auth"><h2 id="authT">Entrar</h2>
+ <form id="authF" novalidate>
+  <div id="authN"><label for="an">Nome completo</label><input id="an" type="text" autocomplete="name"></div>
+  <label for="ae">E-mail</label><input id="ae" type="email" autocomplete="email">
+  <label for="as">Senha (mín. 6 caracteres)</label><input id="as" type="password" autocomplete="current-password">
+  <p class="nota erro" id="authE" role="alert"></p>
+  <button class="btn" style="width:100%" id="authB">Entrar</button>
+ </form>
+ <p class="nota"><button class="lnk" id="authTroca" type="button">Criar conta</button> · <button class="lnk" type="button" data-fechar>Fechar</button></p>
+ <p class="nota">Cadastro simulado: os dados ficam só neste navegador.</p>
+</dialog>
+
+<dialog id="check"><h2>Finalizar pedido</h2>
+ <form id="checkF" novalidate>
+  <label for="cn">Nome completo</label><input id="cn" type="text" autocomplete="name">
+  <div class="dupla"><div><label for="cm">E-mail</label><input id="cm" type="email" autocomplete="email"></div><div><label for="cc">CPF</label><input id="cc" type="text" inputmode="numeric" maxlength="14" placeholder="000.000.000-00"></div></div>
+  <label>Forma de pagamento</label>
+  <div class="tabs"><label><input type="radio" name="pg" value="pix" checked hidden>Pix</label><label><input type="radio" name="pg" value="cartao" hidden>Cartão</label><label><input type="radio" name="pg" value="carteira" hidden>Carteira</label></div>
+  <div class="pg on" id="pg-pix"><div class="qr"><svg id="qr" viewBox="0 0 21 21" aria-label="QR Code Pix simulado"></svg><div><p class="nota" style="margin:0">QR Code simulado. Em produção o Pix seria gerado pelo Mercado Pago.</p><code>00020126580014BR.GOV.BCB.PIX-SIMULADO</code></div></div></div>
+  <div class="pg" id="pg-cartao"><label for="kn">Número do cartão</label><input id="kn" type="text" inputmode="numeric" maxlength="19" placeholder="4242 4242 4242 4242" autocomplete="cc-number">
+   <div class="dupla"><div><label for="kv">Validade</label><input id="kv" type="text" maxlength="5" placeholder="MM/AA"></div><div><label for="kc">CVV</label><input id="kc" type="text" inputmode="numeric" maxlength="4" placeholder="123"></div></div>
+   <p class="nota">Cartão de teste: 4242 4242 4242 4242. Até 3× sem juros.</p></div>
+  <div class="pg" id="pg-carteira"><p class="nota">Redirecionamento simulado para PayPal ou Mercado Pago em ambiente sandbox.</p></div>
+  <p style="margin-top:1rem" class="tit">Total: <b id="cTot" style="color:var(--ouro)"></b></p>
+  <label class="chk"><input type="checkbox" id="ac"> <span>Li e aceito a Política de Privacidade e o recebimento do e-mail do pedido.</span></label>
+  <p class="nota erro" id="cErro" role="alert"></p>
+  <div class="linha2" style="gap:.6rem"><button class="btn" style="flex:1">Pagar (teste)</button><button class="btn sec" type="button" data-fechar>Voltar</button></div>
+ </form>
+</dialog>
+
+<dialog id="ok"><h2>Pedido de teste confirmado</h2><p id="okTxt"></p><div class="email" id="okMail"></div>
+ <p class="nota">Fluxo fiscal: pagamento aprovado, emissão automática da NF-e, envio do XML e DANFE por e-mail.</p><button class="btn" data-fechar>Fechar</button></dialog>
+
+<dialog id="priv"><h2>Política de Privacidade</h2>
+ <p>Coletamos nome, e-mail, CPF e CEP apenas para processar pedidos, emitir nota fiscal e entregar produtos (LGPD, art. 7º, V).</p>
+ <p>Cookies de métricas só são ativados com o seu consentimento. Você pode pedir acesso, correção ou exclusão dos dados em contato@nebulalivros.example.</p>
+ <p>Não vendemos dados. O pagamento é tratado pelo provedor, sem armazenar dados do cartão.</p><button class="btn" data-fechar>Fechar</button></dialog>
+
+<script src="app.js"></script>
+</body>
+</html>
