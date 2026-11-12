@@ -14,7 +14,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%238b7cff'/%3E%3Cellipse cx='16' cy='16' rx='15' ry='4' fill='none' stroke='%23f2d6a2' stroke-width='2'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Exo+2:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <!-- Google Analytics 4: troque G-XXXXXXXXXX pelo seu ID -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
@@ -26,12 +26,13 @@ gtag('js',new Date());gtag('config','G-XXXXXXXXXX');
 </head>
 <body>
 <header class="topo"><div class="wrap">
+ <button class="ham" id="menuBtn" aria-label="Abrir menu" aria-expanded="false">☰</button>
  <a class="logo" href="#">Nébula<span>Livros</span></a>
- <input class="busca" id="q" type="search" placeholder="Buscar título ou autor" aria-label="Buscar livros" style="background:var(--bg2);border:1px solid var(--linha);border-radius:999px;padding:.55rem 1.1rem;color:var(--tx);font:.95rem var(--tit)">
+ <input class="sq busca" id="q" type="search" placeholder="Buscar título ou autor" aria-label="Buscar livros">
  <nav aria-label="Principal">
   <a href="#catalogo">Catálogo</a><a href="#depoimentos">Leitores</a><a href="#faq">Dúvidas</a>
-  <button class="lnk" id="conta" style="font-family:var(--tit);text-decoration:none;color:var(--tx)">Entrar</button>
-  <button class="lnk carrinho" id="abrirCar" aria-label="Abrir carrinho" style="text-decoration:none;font-size:1.3rem">🛒<b id="nCar">0</b></button>
+  <button class="lnk navbtn btnConta" style="text-decoration:none">Entrar</button>
+  <button class="lnk carrinho" id="abrirCar" aria-label="Abrir carrinho">🛒<b id="nCar">0</b></button>
  </nav>
 </div></header>
 
@@ -90,10 +91,18 @@ gtag('js',new Date());gtag('config','G-XXXXXXXXXX');
  <div><h3>Nébula Livros Ltda.</h3><p>CNPJ 00.000.000/0001-00 (fictício)<br>Av. Brasil, 1000, Rio Branco, AC<br>contato@nebulalivros.example<br>(68) 3000-0000</p></div>
  <div><h3>Políticas</h3><ul><li>Arrependimento em 7 dias (Decreto 7.962/2013)</li><li>Troca por defeito em até 30 dias</li><li><button class="lnk" data-abrir="priv">Política de Privacidade (LGPD)</button></li><li><button class="lnk" data-abrir="cook">Gerenciar cookies</button></li></ul></div>
  <div><h3>Atendimento</h3><p>Chat no canto da tela<br>Seg a sex, 9h às 18h<br>Resposta em até 1 dia útil</p></div>
- <p class="legal">Projeto acadêmico de comércio eletrônico. Nenhuma cobrança real é feita e os dados do negócio são fictícios. Capas e títulos pertencem às respectivas editoras e autores e são usados apenas de forma ilustrativa; capas carregadas da Open Library.</p>
+ <p class="legal">Projeto acadêmico de comércio eletrônico. Nenhuma cobrança real é feita e os dados do negócio são fictícios. Capas e títulos pertencem às respectivas editoras e autores e são usados apenas de forma ilustrativa; capas de edições brasileiras carregadas da Open Library e do Google Books.</p>
 </div></footer>
 
 <div id="ov"></div>
+<aside id="menu" aria-label="Menu">
+ <div class="topm"><a class="logo" href="#">Nébula<span>Livros</span></a><button class="x" id="fecharMenu" aria-label="Fechar menu">×</button></div>
+ <input class="sq" id="qm" type="search" placeholder="Buscar título ou autor" aria-label="Buscar livros">
+ <ul>
+  <li><a href="#catalogo">Catálogo</a></li><li><a href="#promo">Cupom de desconto</a></li><li><a href="#depoimentos">Leitores</a></li><li><a href="#faq">Dúvidas frequentes</a></li>
+  <li><button class="btnConta">Entrar</button></li>
+ </ul>
+</aside>
 <aside id="gaveta" aria-label="Carrinho de compras">
  <header>Seu carrinho <button class="x" id="fecharCar" aria-label="Fechar carrinho">×</button></header>
  <div id="itens"></div>
