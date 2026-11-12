@@ -4,64 +4,49 @@ const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'
 const ga=(n,p)=>{try{gtag('event',n,p||{})}catch(e){}};
 const ls={get:(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}},set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 
-/* Catálogo: 30 títulos. isbn = edição brasileira conferida; sem isbn, a capa é buscada no Google Books e só aceita edições com ISBN brasileiro (85 ou 65) */
+/* Catálogo: 30 títulos de edições brasileiras. Cada livro tem ISBNs brasileiros conferidos (separados por |).
+   A capa é carregada pelo ISBN, primeiro na Open Library e, se não existir, no Google Books. Se nenhuma carregar, o card mostra o título. */
 const B=[
-['duna','Duna','Frank Herbert',1965,'Space opera','9788576573135',119.9,89.9,'No deserto de Arrakis nasce a especiaria mais valiosa do universo e o destino de Paul Atreides.'],
-['neuromancer','Neuromancer','William Gibson',1984,'Cyberpunk','9788576570493',79.9,59.9,'Um hacker decadente aceita uma última invasão no ciberespaço. O livro que criou o cyberpunk.'],
-['fundacao','Fundação','Isaac Asimov',1951,'Space opera','',74.9,54.9,'Um matemático prevê a queda do Império Galáctico e monta um plano para encurtar as trevas.'],
-['1984','1984','George Orwell',1949,'Distopia','',49.9,34.9,'Em um Estado que vigia tudo, Winston tenta guardar um pensamento só seu.'],
-['admiravel','Admirável Mundo Novo','Aldous Huxley',1932,'Distopia','',54.9,39.9,'Uma sociedade feliz por design, onde conforto e controle andam juntos.'],
-['fahrenheit','Fahrenheit 451','Ray Bradbury',1953,'Distopia','',52.9,39.9,'Bombeiros queimam livros e Montag começa a duvidar do próprio ofício.'],
-['guia','O Guia do Mochileiro das Galáxias','Douglas Adams',1979,'Space opera','',59.9,44.9,'Minutos antes de a Terra ser demolida, Arthur Dent escapa com um guia de viagem e muito humor.'],
-['ender','O Jogo do Exterminador','Orson Scott Card',1985,'Space opera','',64.9,49.9,'Um menino gênio treina numa escola militar espacial para enfrentar uma invasão alienígena.'],
-['solaris','Solaris','Stanisław Lem',1961,'Primeiro contato','',69.9,52.9,'Numa estação sobre um oceano vivo, um psicólogo encara as memórias que o planeta devolve.'],
-['tres','O Problema dos Três Corpos','Liu Cixin',2008,'Primeiro contato','',89.9,67.9,'Um sinal enviado nos anos 1960 atravessa o espaço e muda o rumo da humanidade.'],
-['robo','Eu, Robô','Isaac Asimov',1950,'Hard SF','',59.9,44.9,'Nove histórias sobre robôs, as Três Leis da Robótica e os paradoxos que elas criam.'],
-['marte','Perdido em Marte','Andy Weir',2011,'Hard SF','',69.9,51.9,'Dado como morto, um astronauta precisa sobreviver sozinho em Marte usando ciência.'],
-['snow','Snow Crash','Neal Stephenson',1992,'Cyberpunk','',79.9,61.9,'Um entregador de pizza e hacker investiga um vírus que atinge mente e rede no Metaverso.'],
-['esquerda','A Mão Esquerda da Escuridão','Ursula K. Le Guin',1969,'Clássicos','',69.9,52.9,'Um enviado humano tenta convencer um planeta de gelo, onde ninguém tem sexo fixo, a se unir a outros mundos.'],
-['laranja','Laranja Mecânica','Anthony Burgess',1962,'Distopia','',64.9,47.9,'Alex e sua gangue espalham violência por uma Inglaterra futura, até o Estado decidir reprogramá-lo.'],
-['androides','Androides Sonham com Ovelhas Elétricas?','Philip K. Dick',1968,'Cyberpunk','',69.9,52.9,'Um caçador de recompensas persegue androides quase idênticos a humanos numa Terra devastada.'],
-['ubik','Ubik','Philip K. Dick',1969,'Clássicos','',62.9,46.9,'Depois de um atentado, a realidade de um grupo de telepatas começa a regredir no tempo.'],
-['castelo','O Homem do Castelo Alto','Philip K. Dick',1962,'Distopia','',69.9,51.9,'Nos Estados Unidos ocupados por nazistas e japoneses, um livro proibido imagina outro final para a guerra.'],
-['hyperion','Hyperion','Dan Simmons',1989,'Space opera','',94.9,69.9,'Sete peregrinos contam suas histórias a caminho do misterioso Chrono-Shrike, em Hyperion.'],
-['despossuidos','Os Despossuídos','Ursula K. Le Guin',1974,'Clássicos','',74.9,55.9,'Um físico deixa seu mundo anarquista para visitar o planeta rico e desigual de onde seus ancestrais saíram.'],
-['contato','Contato','Carl Sagan',1985,'Primeiro contato','',64.9,48.9,'Uma radioastrônoma decifra uma mensagem vinda de Vega e embarca numa viagem sem precedentes.'],
-['maquina','A Máquina do Tempo','H. G. Wells',1895,'Clássicos','',39.9,29.9,'Um inventor viaja ao ano 802.701 e descobre o destino da humanidade.'],
-['guerra','A Guerra dos Mundos','H. G. Wells',1898,'Clássicos','',44.9,32.9,'Cilindros caem na Inglaterra e marcianos começam a invasão da Terra.'],
-['vinte','Vinte Mil Léguas Submarinas','Júlio Verne',1870,'Clássicos','',54.9,39.9,'O capitão Nemo leva um professor a bordo do Náutilus para uma volta pelo fundo dos oceanos.'],
-['frankenstein','Frankenstein','Mary Shelley',1818,'Clássicos','',49.9,36.9,'Um cientista dá vida a uma criatura e foge das consequências do que criou.'],
-['ready','Jogador Nº 1','Ernest Cline',2011,'Cyberpunk','',69.9,52.9,'Num futuro decadente, jovens competem num jogo de realidade virtual por uma fortuna e pelo controle do mundo.'],
-['hailmary','Projeto Hail Mary','Andy Weir',2021,'Hard SF','',89.9,66.9,'Um professor acorda sozinho numa nave, sem memória, com a missão de salvar a Terra.'],
-['floresta','A Floresta Sombria','Liu Cixin',2008,'Primeiro contato','',94.9,69.9,'A humanidade se prepara para a invasão dos trissolarianos e aposta em estratégias de ocultação.'],
-['matadouro','Matadouro 5','Kurt Vonnegut',1969,'Clássicos','',54.9,40.9,'Billy Pilgrim se solta no tempo e revive o bombardeio de Dresden e um cativeiro em outro planeta.'],
-['estacao','Estação Onze','Emily St. John Mandel',2014,'Distopia','',64.9,48.9,'Vinte anos depois de uma pandemia, uma trupe de atores viaja entre vilarejos para manter a arte viva.']
-].map(a=>({id:a[0],t:a[1],a:a[2],y:a[3],g:a[4],isbn:a[5],de:a[6],por:a[7],s:a[8]}));
-const capas=ls.get('nb_capas',{}),ruins=new Set(),pend=new Set();
-const norm=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim();
-const br=i=>/^(97885|97865)/.test(i)||/^(85|65)\d{8}$/.test(i);
-const src=b=>capas[b.id]||(b.isbn?`https://covers.openlibrary.org/b/isbn/${b.isbn}-L.jpg?default=false`:'');
-const capa=(b,cls='')=>{const s=src(b);return`<div class="capa ${cls}"><span>${esc(b.t)}</span><img data-b="${b.id}" ${s?`src="${s}"`:''} alt="Capa de ${esc(b.t)}" loading="lazy"></div>`};
-let fila=Promise.resolve();
-function buscar(b){if(pend.has(b.id))return;pend.add(b.id);fila=fila.then(async()=>{
- const sob=norm(b.a.split(' ').pop()),n=norm(b.t);let url=null;
- try{const j=await(await fetch(`https://www.googleapis.com/books/v1/volumes?q=intitle:${encodeURIComponent(b.t)}+inauthor:${encodeURIComponent(b.a.split(' ').pop())}&langRestrict=pt&printType=books&maxResults=20`)).json();
-  for(const it of j.items||[]){const v=it.volumeInfo||{},t=norm(v.title||'');
-   if(v.imageLinks&&(v.industryIdentifiers||[]).some(x=>br(x.identifier))&&t.startsWith(n)&&t.length<=n.length+8&&(v.authors||[]).some(a=>norm(a).includes(sob))){
-    url=(v.imageLinks.thumbnail||v.imageLinks.smallThumbnail).replace('http:','https:').replace('&edge=curl','').replace('zoom=1','zoom=2');break}}}catch(e){}
- pend.delete(b.id);
- if(url){capas[b.id]=url;ls.set('nb_capas',capas);$$(`img[data-b="${b.id}"]`).forEach(i=>i.src=url)}
- else{ruins.add(b.id);$$(`img[data-b="${b.id}"]`).forEach(i=>i.remove())}
- await new Promise(r=>setTimeout(r,150))})}
-const pedeCapas=()=>$$('img[data-b]:not([src])').forEach(i=>{const b=B.find(x=>x.id===i.dataset.b);ruins.has(b.id)?i.remove():buscar(b)});
-document.addEventListener('error',e=>{const i=e.target;if(i.tagName!=='IMG'||!i.dataset.b)return;const b=B.find(x=>x.id===i.dataset.b);
- if(capas[b.id]){delete capas[b.id];ls.set('nb_capas',capas)}
- if(i.dataset.t)return i.remove();i.dataset.t=1;i.removeAttribute('src');ruins.has(b.id)?i.remove():buscar(b)},true);
+['duna','Duna','Frank Herbert',1965,'Space opera','9788576573135|9788576571018',119.9,89.9,'No deserto de Arrakis nasce a especiaria mais valiosa do universo e o destino de Paul Atreides.'],
+['messias','Messias de Duna','Frank Herbert',1969,'Space opera','9788576571162|9788576573821',79.9,59.9,'Paul Muad’Dib governa o império que conquistou, enquanto uma conspiração se forma ao seu redor.'],
+['filhos','Filhos de Duna','Frank Herbert',1976,'Space opera','9788576571650',84.9,62.9,'Os gêmeos de Paul herdam um império em crise e um futuro que ninguém ousa prever.'],
+['imperador','Imperador Deus de Duna','Frank Herbert',1981,'Space opera','9788576572626',94.9,69.9,'Milênios depois, Leto II governa Arrakis, já verdejante, e carrega o peso do Caminho Dourado.'],
+['neuromancer','Neuromancer','William Gibson',1984,'Cyberpunk','9788576570493|9788576571919',79.9,59.9,'Um hacker decadente aceita uma última invasão no ciberespaço. O livro que criou o cyberpunk.'],
+['fundacao','Fundação','Isaac Asimov',1951,'Space opera','9788576570660',74.9,54.9,'Um matemático prevê a queda do Império Galáctico e monta um plano para encurtar as trevas.'],
+['trilogiaf','Trilogia da Fundação','Isaac Asimov',1953,'Space opera','9788576571971',149.9,109.9,'Fundação, Fundação e Império e Segunda Fundação reunidos num só volume em capa dura.'],
+['robo','Eu, Robô','Isaac Asimov',1950,'Robôs e IA','9788576572008|9788576575023',59.9,44.9,'Nove histórias sobre robôs, as Três Leis da Robótica e os paradoxos que elas criam.'],
+['cavernas','As Cavernas de Aço','Isaac Asimov',1954,'Robôs e IA','9788576574538',64.9,48.9,'Numa Terra superpovoada, um detetive e um robô investigam um assassinato que pode abalar a humanidade.'],
+['alvorada','Os Robôs da Alvorada','Isaac Asimov',1983,'Robôs e IA','9788576572657',79.9,58.9,'O detetive Baley viaja ao planeta Aurora para investigar a destruição de um robô quase humano.'],
+['robosimperio','Robôs e Império','Isaac Asimov',1985,'Robôs e IA','9788576573197',84.9,62.9,'O elo entre as sagas dos robôs e da Fundação, num conflito que decide o futuro da Galáxia.'],
+['ubik','Ubik','Philip K. Dick',1969,'Clássicos','9788576570752',62.9,46.9,'Depois de um atentado, a realidade de um grupo de telepatas começa a regredir no tempo.'],
+['androides','Androides Sonham com Ovelhas Elétricas?','Philip K. Dick',1968,'Cyberpunk','9788576571605|9788576573845',69.9,52.9,'Um caçador de recompensas persegue androides quase idênticos a humanos numa Terra devastada.'],
+['realidades','Realidades Adaptadas','Philip K. Dick',2012,'Clássicos','9788576571346',64.9,47.9,'Contos de Dick que viraram filmes como Minority Report e O Vingador do Futuro.'],
+['sonhos','Sonhos Elétricos','Philip K. Dick',2018,'Clássicos','9788576573975',59.9,43.9,'Dez contos adaptados na série Electric Dreams, sobre realidade, memória e controle.'],
+['palmer','Os Três Estigmas de Palmer Eldritch','Philip K. Dick',1965,'Clássicos','9788576574989',64.9,47.9,'Uma droga alucinógena e um industrial misterioso embaralham realidade e ilusão nas colônias de Marte.'],
+['esquerda','A Mão Esquerda da Escuridão','Ursula K. Le Guin',1969,'Clássicos','9788576574484|9788576570578',69.9,52.9,'Um enviado humano tenta convencer um planeta de gelo, onde ninguém tem sexo fixo, a se unir a outros mundos.'],
+['despossuidos','Os Despossuídos','Ursula K. Le Guin',1974,'Clássicos','9788576574583|9788576573685',74.9,55.9,'Um físico deixa seu mundo anarquista para visitar o planeta rico e desigual de onde seus ancestrais saíram.'],
+['laranja','Laranja Mecânica','Anthony Burgess',1962,'Distopia','9788576571360|9788576574637',64.9,47.9,'Alex e sua gangue espalham violência por uma Inglaterra futura, até o Estado decidir reprogramá-lo.'],
+['solaris','Solaris','Stanisław Lem',1961,'Primeiro contato','9788576573326',69.9,52.9,'Numa estação sobre um oceano vivo, um psicólogo encara as memórias que o planeta devolve.'],
+['1984','1984','George Orwell',1949,'Distopia','9788535914849',49.9,34.9,'Em um Estado que vigia tudo, Winston tenta guardar um pensamento só seu.'],
+['admiravel','Admirável Mundo Novo','Aldous Huxley',1932,'Distopia','9788525056009',54.9,39.9,'Uma sociedade feliz por design, onde conforto e controle andam juntos.'],
+['fahrenheit','Fahrenheit 451','Ray Bradbury',1953,'Distopia','9788525052247|9786558300151',52.9,39.9,'Bombeiros queimam livros e Montag começa a duvidar do próprio ofício.'],
+['tres','O Problema dos Três Corpos','Liu Cixin',2008,'Primeiro contato','9788556510204',89.9,67.9,'Um sinal enviado nos anos 1960 atravessa o espaço e muda o rumo da humanidade.'],
+['floresta','A Floresta Sombria','Liu Cixin',2008,'Primeiro contato','9788556510501',99.9,74.9,'A humanidade se prepara para a invasão dos trissolarianos e aposta em estratégias de ocultação.'],
+['fimmorte','O Fim da Morte','Liu Cixin',2010,'Primeiro contato','9788556510747',119.9,89.9,'O desfecho da trilogia: a humanidade enfrenta o limite do universo e uma escolha final.'],
+['terra','Terra à Deriva: Contos','Liu Cixin',2017,'Hard SF','9788556513113',89.9,66.9,'Dez contos de Cixin Liu, da catástrofe cósmica ao humor, com suas ideias mais ousadas.'],
+['guia','O Guia do Mochileiro das Galáxias','Douglas Adams',1979,'Space opera','9788599296776',59.9,44.9,'Minutos antes de a Terra ser demolida, Arthur Dent escapa com um guia de viagem e muito humor.'],
+['restaurante','O Restaurante no Fim do Universo','Douglas Adams',1980,'Space opera','9788599296585|9788599296950',59.9,44.9,'Arthur Dent e seus amigos seguem pela galáxia rumo ao restaurante mais improvável do universo.'],
+['marte','Perdido em Marte','Andy Weir',2011,'Hard SF','9788580414486',69.9,51.9,'Dado como morto, um astronauta precisa sobreviver sozinho em Marte usando ciência.']
+].map(a=>({id:a[0],t:a[1],a:a[2],y:a[3],g:a[4],isbns:a[5].split('|'),de:a[6],por:a[7],s:a[8]}));
+const fontes=b=>b.isbns.flatMap(i=>[`https://covers.openlibrary.org/b/isbn/${i}-L.jpg?default=false`,`https://books.google.com/books/content?vid=ISBN${i}&printsec=frontcover&img=1&zoom=1`]);
+const capa=(b,cls='')=>`<div class="capa ${cls}"><span>${esc(b.t)}</span><img data-b="${b.id}" data-n="0" src="${fontes(b)[0]}" alt="Capa de ${esc(b.t)}" loading="lazy"></div>`;
+function proxima(i){const b=B.find(x=>x.id===i.dataset.b),f=fontes(b),n=+i.dataset.n+1;if(n<f.length){i.dataset.n=n;i.src=f[n]}else i.remove()}
+document.addEventListener('error',e=>{if(e.target.tagName==='IMG'&&e.target.dataset.b)proxima(e.target)},true);
+document.addEventListener('load',e=>{if(e.target.tagName==='IMG'&&e.target.dataset.b&&e.target.naturalWidth<=1)proxima(e.target)},true);
 const item=b=>({item_id:b.id,item_name:b.t,item_brand:b.a,item_category:b.g,price:b.por});
 
 /* Hero */
-$('#leque').innerHTML=['duna','neuromancer','fundacao'].map(i=>capa(B.find(b=>b.id===i))).join('');pedeCapas();
-
+$('#leque').innerHTML=['duna','neuromancer','fundacao'].map(i=>capa(B.find(b=>b.id===i))).join('');
 /* Filtros e lista */
 let cat='Todos',q='';
 const cats=['Todos',...new Set(B.map(b=>b.g))];
@@ -79,8 +64,7 @@ function lista(){
  if(o==='ano')l.sort((x,y)=>x.y-y.y);if(o==='az')l.sort((x,y)=>x.t.localeCompare(y.t,'pt'));
  $('#cont').textContent=l.length+' livro'+(l.length===1?'':'s')+' encontrado'+(l.length===1?'':'s');
  $('#grade').innerHTML=l.length?l.map(b=>`<article class="card"><div style="position:relative"><span class="badge">-${Math.round((1-b.por/b.de)*100)}%</span>${capa(b)}</div><div class="info"><small>${b.g} · ${b.y}</small><h3>${esc(b.t)}</h3><p class="aut">${esc(b.a)}</p><p class="sin">${esc(b.s)}</p><div class="pr"><s>${R(b.de)}</s><b>${R(b.por)}</b></div><button class="btn" data-add="${b.id}">Adicionar ao carrinho</button></div></article>`).join(''):'<p class="vazio">Nenhum livro encontrado. Tente outro termo ou categoria.</p>';
- pedeCapas();
- if(!vl){vl=true;ga('view_item_list',{item_list_name:'catalogo',items:l.map(item)})}
+  if(!vl){vl=true;ga('view_item_list',{item_list_name:'catalogo',items:l.map(item)})}
 }
 $('#grade').onclick=e=>{const id=e.target.dataset.add;if(!id)return;const b=B.find(x=>x.id===id);car[id]=(car[id]||0)+1;salvar();ga('add_to_cart',{currency:'BRL',value:b.por,items:[{...item(b),quantity:1}]});abrir()};
 
@@ -95,8 +79,7 @@ function desenhar(){
  $('#itens').innerHTML=ids.length?ids.map(i=>{const b=B.find(x=>x.id===i);return`<div class="item">${capa(b)}<div><h3>${esc(b.t)}</h3><small>${R(b.por)}</small><div class="qtd"><button data-m="${i}" aria-label="Diminuir">−</button><span>${car[i]}</span><button data-p="${i}" aria-label="Aumentar">+</button></div></div><button class="x" data-r="${i}" aria-label="Remover ${esc(b.t)}">×</button></div>`}).join(''):'<p class="nota">Seu carrinho está vazio. Escolha um livro no catálogo.</p>';
  $('#rSub').textContent=R(o.sub);$('#rDesc').textContent='− '+R(o.desc);
  $('#rFrete').textContent=!ids.length?R(0):o.gr?'Grátis':frete?R(frete):'Informe o CEP';$('#rTot').textContent=R(o.t);
- $('#irCheck').disabled=!ids.length;pedeCapas();
-}
+ $('#irCheck').disabled=!ids.length;}
 $('#itens').onclick=e=>{const t=e.target,d=t.dataset;
  if(d.p)car[d.p]++;
  if(d.m&&--car[d.m]<=0)delete car[d.m];
