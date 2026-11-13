@@ -1,4 +1,5 @@
-const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const nulo=new Proxy(function(){},{get:()=>nulo,set:()=>true,apply:()=>nulo});
+const $=s=>document.querySelector(s)||nulo,$$=s=>[...document.querySelectorAll(s)];
 const R=v=>v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const ga=(n,p)=>{try{gtag('event',n,p||{})}catch(e){}};
@@ -11,7 +12,7 @@ const B=[
 ['messias','Messias de Duna','Frank Herbert',1969,'Space opera','9788576571162|9788576573821',79.9,59.9,'Paul Muad’Dib governa o império que conquistou, enquanto uma conspiração se forma ao seu redor.'],
 ['filhos','Filhos de Duna','Frank Herbert',1976,'Space opera','9788576571650',84.9,62.9,'Os gêmeos de Paul herdam um império em crise e um futuro que ninguém ousa prever.'],
 ['imperador','Imperador Deus de Duna','Frank Herbert',1981,'Space opera','9788576572626',94.9,69.9,'Milênios depois, Leto II governa Arrakis, já verdejante, e carrega o peso do Caminho Dourado.'],
-['neuromancer','Neuromancer','William Gibson',1984,'Cyberpunk','9788576570493|9788576571919',79.9,59.9,'Um hacker decadente aceita uma última invasão no ciberespaço. O livro que criou o cyberpunk.'],
+['neuromancer','Neuromancer','William Gibson',1984,'Cyberpunk','9788576573005|9788585887902|9788576571407|9788576570493|9788576571919',79.9,59.9,'Um hacker decadente aceita uma última invasão no ciberespaço. O livro que criou o cyberpunk.'],
 ['fundacao','Fundação','Isaac Asimov',1951,'Space opera','9788576570660',74.9,54.9,'Um matemático prevê a queda do Império Galáctico e monta um plano para encurtar as trevas.'],
 ['trilogiaf','Trilogia da Fundação','Isaac Asimov',1953,'Space opera','9788576571971',149.9,109.9,'Fundação, Fundação e Império e Segunda Fundação reunidos num só volume em capa dura.'],
 ['robo','Eu, Robô','Isaac Asimov',1950,'Robôs e IA','9788576572008|9788576575023',59.9,44.9,'Nove histórias sobre robôs, as Três Leis da Robótica e os paradoxos que elas criam.'],
@@ -28,12 +29,11 @@ const B=[
 ['laranja','Laranja Mecânica','Anthony Burgess',1962,'Distopia','9788576571360|9788576574637',64.9,47.9,'Alex e sua gangue espalham violência por uma Inglaterra futura, até o Estado decidir reprogramá-lo.'],
 ['solaris','Solaris','Stanisław Lem',1961,'Primeiro contato','9788576573326',69.9,52.9,'Numa estação sobre um oceano vivo, um psicólogo encara as memórias que o planeta devolve.'],
 ['1984','1984','George Orwell',1949,'Distopia','9788535914849',49.9,34.9,'Em um Estado que vigia tudo, Winston tenta guardar um pensamento só seu.'],
-['admiravel','Admirável Mundo Novo','Aldous Huxley',1932,'Distopia','9788525056009',54.9,39.9,'Uma sociedade feliz por design, onde conforto e controle andam juntos.'],
 ['fahrenheit','Fahrenheit 451','Ray Bradbury',1953,'Distopia','9788525052247|9786558300151',52.9,39.9,'Bombeiros queimam livros e Montag começa a duvidar do próprio ofício.'],
 ['tres','O Problema dos Três Corpos','Liu Cixin',2008,'Primeiro contato','9788556510204',89.9,67.9,'Um sinal enviado nos anos 1960 atravessa o espaço e muda o rumo da humanidade.'],
 ['floresta','A Floresta Sombria','Liu Cixin',2008,'Primeiro contato','9788556510501',99.9,74.9,'A humanidade se prepara para a invasão dos trissolarianos e aposta em estratégias de ocultação.'],
 ['fimmorte','O Fim da Morte','Liu Cixin',2010,'Primeiro contato','9788556510747',119.9,89.9,'O desfecho da trilogia: a humanidade enfrenta o limite do universo e uma escolha final.'],
-['terra','Terra à Deriva: Contos','Liu Cixin',2017,'Hard SF','9788556513113',89.9,66.9,'Dez contos de Cixin Liu, da catástrofe cósmica ao humor, com suas ideias mais ousadas.'],
+['inofensiva','Praticamente Inofensiva','Douglas Adams',1992,'Space opera','9788599296981',59.9,44.9,'No quinto livro da série, Arthur Dent encontra um novo lar e a Terra ainda tem mais uma surpresa.'],
 ['guia','O Guia do Mochileiro das Galáxias','Douglas Adams',1979,'Space opera','9788599296776',59.9,44.9,'Minutos antes de a Terra ser demolida, Arthur Dent escapa com um guia de viagem e muito humor.'],
 ['restaurante','O Restaurante no Fim do Universo','Douglas Adams',1980,'Space opera','9788599296585|9788599296950',59.9,44.9,'Arthur Dent e seus amigos seguem pela galáxia rumo ao restaurante mais improvável do universo.'],
 ['marte','Perdido em Marte','Andy Weir',2011,'Hard SF','9788580414486',69.9,51.9,'Dado como morto, um astronauta precisa sobreviver sozinho em Marte usando ciência.']
@@ -68,6 +68,7 @@ function lista(){
 }
 $('#grade').onclick=e=>{const id=e.target.dataset.add;if(!id)return;const b=B.find(x=>x.id===id);car[id]=(car[id]||0)+1;salvar();ga('add_to_cart',{currency:'BRL',value:b.por,items:[{...item(b),quantity:1}]});abrir()};
 
+lista();
 /* Carrinho */
 let car=ls.get('nb_car',{}),cupom=false,frete=null;
 const salvar=()=>{ls.set('nb_car',car);desenhar()};
